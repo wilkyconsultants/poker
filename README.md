@@ -9,7 +9,7 @@ Future enhancements planned:
 - maintain chip counts of players
 - simulate full tournament
 
-Example run:
+Example run: ./deal_hands.py
 
   --------- Community cards: ['Q♣', '9♣', '5♢', 'J♠', 'J♡']  ----------
   
