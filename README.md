@@ -12,12 +12,18 @@ Future enhancements planned:
 Example run:
 
   --------- Community cards: ['Q♣', '9♣', '5♢', 'J♠', 'J♡']  ----------
+  
 
 #01 Hole cards: ['4♣', '2♣']  Hand:  ['J♠', 'J♡', 'Q♣', '9♣', '5♢']   1 One Pair
+
 #02 Hole cards: ['Q♡', '9♢']  Hand:  ['Q♡', 'Q♣', 'J♠', 'J♡', '5♢']   2 Two Pair
+
 #03 Hole cards: ['8♠', '7♡']  Hand:  ['J♠', 'J♡', 'Q♣', '9♣', '8♠']   1 One Pair
+
 #04 Hole cards: ['T♠', '7♣']  Hand:  ['J♠', 'J♡', 'Q♣', 'T♠', '9♣']   1 One Pair
+
 #05 Hole cards: ['K♢', '8♡']  Hand:  ['J♠', 'J♡', 'K♢', 'Q♣', '9♣']   1 One Pair
+
 #06 Hole cards: ['3♠', 'J♣']  Hand:  ['J♣', 'J♠', 'J♡', 'Q♣', '9♣']   3 Three of a Kind
 #07 Hole cards: ['7♠', '2♡']  Hand:  ['J♠', 'J♡', 'Q♣', '9♣', '7♠']   1 One Pair
 #08 Hole cards: ['A♢', 'K♡']  Hand:  ['J♠', 'J♡', 'A♢', 'K♡', 'Q♣']   1 One Pair
