@@ -3,8 +3,8 @@ import random
 from poker.hand import Hand
 from itertools import combinations
 
-# change num_players to a value 1 to 23
-num_players=23
+# optionally change num_players to a value 1 to 23
+num_players=10
 
 class Card:
     def __init__(self, suit, rank):
