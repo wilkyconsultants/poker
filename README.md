@@ -2,6 +2,12 @@
 Poker-texas Holdem simulation
 Run this simulation to get 23 hands from the same deck and 5 community cards
 
+Future enhancements planned:
+- Change to table of 10 hands and deal around a table showing Dealer, SB, BB
+- Have computer do the bids based on strength of hand pre-flop, flop, turn and river
+- maintain chip counts of players
+- simulate full tournament
+
 Example run:
 
   --------- Community cards: ['Q♣', '9♣', '5♢', 'J♠', 'J♡']  ----------
