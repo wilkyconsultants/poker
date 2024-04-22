@@ -131,9 +131,6 @@ def evaluate_hand(hole_cards, community_cards):
         used_cards.extend(flush_cards[:5])
         hand_strength = 5
         hand_rank = HAND_RANKS[5]  # Flush
-    
-    # Determine hand rank
-    hand_rank = None
 
     # Straight Flush
     if straight_ranks and flush_suit:
@@ -257,8 +254,7 @@ def evaluate_hand(hole_cards, community_cards):
         used_cards.sort(key=lambda x: rank_mapping[x[:-1]])
     
     return hand_rank, used_cards, hand_strength
-# Example usage
-
+    
 # Define card ranks and suits
 RANKS = '23456789TJQKA'
 SUITS = 'CDHS'
