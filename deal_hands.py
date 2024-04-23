@@ -175,11 +175,12 @@ def evaluate_hand(hole_cards, community_cards):
         for rank, count in rank_count.items():
             if count == 3:
                 three_of_a_kind_rank = rank
-            elif count == 2:
+            elif count >= 2:  # Changed to handle multiple pairs
                 pair_rank = rank
-        used_cards = [card for card in all_cards if card[:-1] == three_of_a_kind_rank or card[:-1] == pair_rank]
-        hand_strength = 6
-        hand_rank = HAND_RANKS[6]  # Full House
+        if three_of_a_kind_rank is not None and pair_rank is not None:
+            hand_strength = 6
+            hand_rank = HAND_RANKS[6]  # Full House
+            used_cards = [card for card in all_cards if card[:-1] == three_of_a_kind_rank or card[:-1] == pair_rank]
     
     # Flush
     elif flush_suit:
