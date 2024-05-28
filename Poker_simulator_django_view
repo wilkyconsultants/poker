@@ -1,0 +1,96 @@
+from django.shortcuts import render
+from treys import Card, Evaluator, Deck
+from itertools import combinations
+
+def poker_game(request):
+    # Initialize deck and evaluator
+    deck = Deck()
+    evaluator = Evaluator()
+
+    # Draw five community cards
+    community_cards = deck.draw(5)
+
+    # Function to convert card to pretty string with custom suits
+    def card_to_custom_str(card):
+        rank_str = Card.int_to_pretty_str(card)[0]
+        pcard = Card.int_to_pretty_str(card)[1]
+        suit = Card.int_to_pretty_str(card)[2]
+        # ♣', 'S': '♠'
+        if suit == '♣':
+            return pcard + '♣'
+        elif suit == '♠':
+            return pcard + '♠'
+        elif suit == '♥':
+            return pcard + '❤️'
+        elif suit == '♦':
+            return pcard + '♦️'
+        return Card.int_to_pretty_str(card)
+
+    # Convert the community cards to pretty strings with custom suits and join them
+    community_cards_pretty = ' '.join(card_to_custom_str(card) for card in community_cards)
+
+    # List to store hands and their details
+    hands = []
+
+    # Function to get the best 5-card hand
+    def get_best_five_card_hand(cards):
+        best_hand = None
+        best_score = float('inf')
+        for combo in combinations(cards, 5):
+            score = evaluator.evaluate([], list(combo))
+            if score < best_score:
+                best_score = score
+                best_hand = combo
+        return best_hand, best_score
+
+    # Loop to generate x hands
+    num_hands = 10
+    for rank, i in enumerate(range(1, num_hands + 1), start=1):
+    #for i in range(1, num_hands + 1):
+        # Deal two hole cards to a player
+        player_hand = deck.draw(2)
+
+        # Convert the player's hand to pretty strings with custom suits and join them
+        player_hand_pretty = ' '.join(card_to_custom_str(card) for card in player_hand)
+
+        # Combine player's hand with community cards
+        all_cards = player_hand + community_cards
+
+        # Get the best 5-card hand
+        best_hand, player_score = get_best_five_card_hand(all_cards)
+        best_hand_pretty = ' '.join(card_to_custom_str(card) for card in best_hand)
+
+        # Evaluate the player's hand
+        player_class = evaluator.get_rank_class(player_score)
+        hand_name = evaluator.class_to_string(player_class)
+        hand_name = hand_name.ljust(15)
+
+        # Store the hand details including the original hand number
+        #hands.append((i, player_score, player_hand_pretty, hand_name, best_hand_pretty))
+
+        # Calculate the difference percentage
+        difference_percentage = round(((7463 - player_score) / 7462) * 100, 2)
+        formatted_percentage = "{:.2f}".format(difference_percentage)
+        difference_percentage = formatted_percentage
+
+        # Store the hand details including the original hand number and difference percentage
+        hands.append((i, player_score, difference_percentage, player_hand_pretty, hand_name, best_hand_pretty))
+
+
+    # Sort hands by player_score (ascending order, so strongest hand first)
+    hands.sort(key=lambda x: x[1])
+ 
+    # Add sequence number after sorting
+    for index, hand in enumerate(hands):
+        hands[index] = (index + 1,) + hand
+
+    #hands.sort(key=lambda x: x[1])
+
+    # Prepare data to pass to template
+    context = {
+        'community_cards': community_cards_pretty,
+        'player_hands': hands,
+    }
+
+    # Render HTML template with the data
+    return render(request, 'poker.html', context)
