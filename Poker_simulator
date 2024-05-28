@@ -1,0 +1,94 @@
+
+#!/Library/Frameworks/Python.framework/Versions/3.9/bin/python3
+
+# script to create poker hands and evaluate them based on value
+# Royal Flush: Score of 1
+# Straight Flush: Scores from 2 to 10
+# Four of a Kind: Scores from 11 to 166
+# Full House: Scores from 167 to 322
+# Flush: Scores from 323 to 1599
+# Straight: Scores from 1600 to 1609
+# Three of a Kind: Scores from 1610 to 2467
+# Two Pair: Scores from 2468 to 3325
+# One Pair: Scores from 3326 to 6185
+# High Card: Scores from 6186 to 7462
+
+from treys import Card, Evaluator, Deck
+from itertools import combinations
+
+# Initialize deck and evaluator
+deck = Deck()
+evaluator = Evaluator()
+
+# Draw five community cards
+community_cards = deck.draw(5)
+community_cards_pretty = ' '.join(Card.int_to_pretty_str(card) for card in community_cards)
+
+# Function to convert card to pretty string with custom suits
+def card_to_custom_str(card):
+    rank_str = Card.int_to_pretty_str(card)[0]
+    pcard = Card.int_to_pretty_str(card)[1]
+    suit = Card.int_to_pretty_str(card)[2]
+    if suit == '♣':
+        return '['+pcard + '♣'+' ]'
+    elif suit == '♠':
+        return '['+pcard + '♠'+' ]'
+    elif suit == '♥':
+        return '['+pcard + '❤️'+' ]'
+    elif suit == '♦':
+        return '['+pcard + '♦️'+' ]'
+    return Card.int_to_pretty_str(card)
+
+# Convert the player's hand to pretty strings with custom suits and join them
+community_cards_pretty = ' '.join(card_to_custom_str(card) for card in community_cards)
+
+print(f"Community Cards: {community_cards_pretty}")
+
+# List to store hands and their details
+hands = []
+
+# Function to get the best 5-card hand
+def get_best_five_card_hand(cards):
+    best_hand = None
+    best_score = float('inf')
+    for combo in combinations(cards, 5):
+        score = evaluator.evaluate([], list(combo))
+        if score < best_score:
+            best_score = score
+            best_hand = combo
+    return best_hand, best_score
+
+# Loop to generate x hands
+num_hands=23
+for i in range(1, num_hands+1):
+    # Deal two hole cards to a player
+    player_hand = deck.draw(2)
+
+    # Convert the player's hand to pretty strings with custom suits and join them
+    player_hand_pretty = ' '.join(card_to_custom_str(card) for card in player_hand)
+
+    # Combine player's hand with community cards
+    all_cards = player_hand + community_cards
+
+    # Get the best 5-card hand
+    best_hand, player_score = get_best_five_card_hand(all_cards)
+    best_hand_pretty = ' '.join(card_to_custom_str(card) for card in best_hand)
+
+    # Evaluate the player's hand
+    player_class = evaluator.get_rank_class(player_score)
+    hand_name = evaluator.class_to_string(player_class)
+    hand_name = hand_name.ljust(15)
+
+    # Store the hand details including the original hand number
+    hands.append((i, player_score, player_hand_pretty, hand_name, best_hand_pretty))
+
+# Sort hands by player_score (ascending order, so strongest hand first)
+hands.sort(key=lambda x: x[1])
+
+# Print sorted hands
+for rank, (original_hand_number, player_score, player_hand_pretty, hand_name, best_hand_pretty) in enumerate(hands, start=1):
+    player_score_str = str(player_score).zfill(4)
+    rank_str = str(rank).zfill(2)
+    original_hand_number_str = str(original_hand_number).zfill(2)
+    best_hand_marker = '*best*' if player_score == hands[0][1] else ''  # Mark the best hand(s) with '*best*'
+    print(f"Rank #{rank_str}: Hand#{original_hand_number_str} - [{player_score_str}] {player_hand_pretty} [{hand_name}] Hand: {best_hand_pretty} {best_hand_marker}")
