@@ -1,0 +1,122 @@
+<!-- poker.html to be used with Poker_simulator_django_views -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game</title>
+</head>
+
+<style>
+    .bold-text {
+        font-weight: bold;
+        font-size: 4;
+    }
+    .right-align {
+        text-align: right;
+    }
+</style>
+
+<body>
+<center>
+    <font color=blue><font size=5><b>MR🌐Tracker Texas Hold'em Hand Simulator</b><br><font color=black>
+<button onclick="location.reload()">Generate Hands</button>
+    <font size=4><b><font color=green>Community Cards:<font color=black> {{ community_cards }}<br><font color=black>
+<table border="1">
+        <tr class="bold-text">
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Value</th>
+            <th>Pct</th>
+            <th>Hole Cards</th>
+            <th>Hand Rank</th>
+            <th>Used Cards</th>
+        </tr>
+
+
+{% if player_hands %}
+    {% with prev_hand=player_hands.0 %}
+        {% for player_hand in player_hands %}
+            <tr class="bold-text">
+                {% if player_hand.2 == prev_hand.2 and not forloop.first %}
+                    <td class="bold-text"><center><font color=blue>1-Tie</td>
+                {% else %}
+                    <td class="bold-text"><center>{{ player_hand.0 }}</td>
+                {% endif %}
+                <td class="bold-text"><center>{{ player_hand.1 }}</td>
+                <td class="bold-text right-align">{{ player_hand.2 }}</td>
+                <td class="bold-text right-align">{{ player_hand.3 }}</td>
+                <td class="bold-text"><center>{{ player_hand.4 }}</td>
+                <td class="bold-text">{{ player_hand.5 }}</td>
+                <td class="bold-text">{{ player_hand.6 }}</td>
+            </tr>
+            {% with prev_hand=player_hand %}
+            {% endwith %}
+        {% endfor %}
+    {% endwith %}
+{% endif %}
+
+    </table>
+    </h2>
+<table border="1" style="border-collapse: collapse;">
+    <tr>
+        <th><b>Hand</b></th>
+        <th><b># Hands</b></th>
+        <th><b>Pct Possible</b></th>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Royal Flush</td>
+        <td style="text-align: center; font-weight: normal;">1</td>
+        <td style="text-align: center; font-weight: normal;">0.01%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Straight Flush</td>
+        <td style="text-align: center; font-weight: normal;">9</td>
+        <td style="text-align: center; font-weight: normal;">0.12%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Four of a Kind</td>
+        <td style="text-align: center; font-weight: normal;">156</td>
+        <td style="text-align: center; font-weight: normal;">2.09%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Full House</td>
+        <td style="text-align: center; font-weight: normal;">156</td>
+        <td style="text-align: center; font-weight: normal;">2.09%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Flush</td>
+        <td style="text-align: center; font-weight: normal;">1277</td>
+        <td style="text-align: center; font-weight: normal;">17.12%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Straight</td>
+        <td style="text-align: center; font-weight: normal;">10</td>
+        <td style="text-align: center; font-weight: normal;">0.13%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Three of a Kind</td>
+        <td style="text-align: center; font-weight: normal;">858</td>
+        <td style="text-align: center; font-weight: normal;">11.50%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">Two Pair</td>
+        <td style="text-align: center; font-weight: normal;">858</td>
+        <td style="text-align: center; font-weight: normal;">11.50%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">One Pair</td>
+        <td style="text-align: center; font-weight: normal;">2860</td>
+        <td style="text-align: center; font-weight: normal;">38.35%</td>
+    </tr>
+    <tr>
+        <td style="font-weight: normal;">High Card</td>
+        <td style="text-align: center; font-weight: normal;">1277</td>
+        <td style="text-align: center; font-weight: normal;">17.12%</td>
+    </tr>
+</table>
+
+
+</body>
+</html>
